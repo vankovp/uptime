@@ -193,7 +193,7 @@ class Server(BaseHTTPRequestHandler):
         """execute on get"""
         if self.path == '/full':
             self._set_headers(200)
-            self.wfile.write(json.dumps(monitor.data).encode('utf-8'))
+            self.wfile.write(json.dumps(monitor.data_to_json()).encode('utf-8'))
         if self.path == '/aggregated':
             self._set_headers(200)
             self.wfile.write(json.dumps(monitor.uptime()).encode('utf-8'))
