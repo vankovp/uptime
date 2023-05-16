@@ -1,0 +1,21 @@
+---
+
+version: '3.1'
+services:
+
+  bonds_trader:
+    image: uptime_monitor
+    build: .
+    env_file:
+      - env.file
+    restart: always
+    # healthcheck:
+    #   test: ["CMD", "python", "healthcheck.py"]
+    #   interval: 30s
+    #   timeout: 2s
+    #   retries: 1
+    volumes:
+      - /var/monitoring_data:/var/data
+    command: ["python", "main.py"]
+    ports:
+      - 80:80
