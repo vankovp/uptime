@@ -53,6 +53,7 @@ class UptimeMonitor:
         retention_time - how long store data, minutes
         check_period - how often check each endpoint, seconds
         """
+        self.urls = urls
         self.pool = ThreadPoolExecutor(50)
         self.logger = setup_logger('logger')
         self.dump_file = dump_file
@@ -66,6 +67,11 @@ class UptimeMonitor:
             with open(self.dump_file) as f:
                 js = json.load(f)
                 self.data = self.json_to_data(js)
+            # delete urls that could be in dump but not desired anymore
+            durls = list(self.data.keys())
+            for url in durls:
+                if url not in self.urls:
+                    del self.data[url]
         except Exception as e:
             self.logger.error('dump loading failed')
             self.logger.error(e)
@@ -95,6 +101,7 @@ class UptimeMonitor:
         delete all the data points
         older than specified retention_time
         """
+
         now = datetime.now()
         for url, data in self.data.items():
             to_delete = []
@@ -166,9 +173,9 @@ class UptimeMonitor:
             try:
                 self.dump_data()
                 self.delete_expired()
-                for url in self.data:
-                    # self.pool.submit(self.check_url, url)
-                    self.check_url(url)
+                for url in self.urls:
+                    self.pool.submit(self.check_url, url)
+                    # self.check_url(url)
             except Exception as e:
                 self.logger.error(e)
                 self.logger.error(full_stack())
