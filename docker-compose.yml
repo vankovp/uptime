@@ -3,7 +3,7 @@
 version: '3.1'
 services:
 
-  bonds_trader:
+  monitor:
     image: uptime_monitor
     build: .
     env_file:
