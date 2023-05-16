@@ -18,4 +18,4 @@ services:
       - /var/monitoring_data:/var/data
     command: ["python", "main.py"]
     ports:
-      - 80:80
+      - 88:80
