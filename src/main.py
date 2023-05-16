@@ -184,7 +184,7 @@ class UptimeMonitor:
 
 class Server(BaseHTTPRequestHandler):
     """
-    A HTTP server to data
+    A HTTP server to expose data
     """
 
     def _set_headers(self, code):
